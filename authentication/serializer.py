@@ -1,11 +1,22 @@
+from .models import Profile
 from dataclasses import fields
+from distutils.command.upload import upload
 from rest_framework import serializers
 from phonenumber_field.serializerfields import PhoneNumberField
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+class CreateProfileSerializer(serializers.HyperlinkedModelSerializer):
+    image = serializers.ImageField(default='default.jpg')
+
+    class Meta:
+        model = Profile
+        fields = ['image']
+
+
 class UserCreationSerializer(serializers.ModelSerializer):
+    profile = CreateProfileSerializer(read_only=True)
     username = serializers.CharField(max_length=25)
     email = serializers.EmailField(max_length=80)
     phone_number = PhoneNumberField(allow_null=False, allow_blank=False)
@@ -13,7 +24,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'phone_number', 'password']
+        fields = ['username', 'email', 'phone_number', 'password', 'profile']
 
     def validate(self, attrs):
         username_exists = User.objects.filter(username=attrs['username']).exists()
@@ -42,3 +53,4 @@ class UserCreationSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+

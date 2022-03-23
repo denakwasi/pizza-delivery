@@ -30,3 +30,4 @@ class Order(models.Model):
     def __str__(self) -> str:
         return f'<Order {self.size} by {self.customer.username} with email {self.customer.email}>'
 
+

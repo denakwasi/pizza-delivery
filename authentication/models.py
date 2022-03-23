@@ -1,10 +1,9 @@
-from enum import unique
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
-
+from django.contrib.auth import get_user_model
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
@@ -46,3 +45,12 @@ class User(AbstractUser):
     def __str__(self) -> str:
         return f"<User {self.email}>"
 
+User = get_user_model()
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+
+    def __str__(self) -> str:
+       return f"{self.user.username} Profile" 
+
+    

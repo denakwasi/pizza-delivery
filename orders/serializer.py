@@ -12,6 +12,7 @@ class OrderCreationSerializer(serializers.ModelSerializer):
         model = Order
         fields = ['id', 'size', 'order_status', 'quantity']
 
+
 class OrderDetailSerializer(serializers.ModelSerializer):
     size = serializers.CharField(max_length=100)
     order_status = serializers.CharField(max_length=80, default='PENDING')
