@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'djoser',
     'drf_yasg',
     'corsheaders',
+    'storages',
 ]
 
 AUTH_USER_MODEL = 'authentication.User'
@@ -154,13 +155,22 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Bucket Config
+AWS_ACCESS_KEY_ID = 'AKIAQL53MHBQ24BLYKX6'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'denniskowuah748-bucket'
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # MEDIA_URL = 'media/'
