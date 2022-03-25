@@ -3,6 +3,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import User, Profile
 from . import serializer
+from rest_framework.parsers import FormParser, FileUploadParser
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 
 class UserCreateView(generics.GenericAPIView):
@@ -29,10 +30,11 @@ class AllUsers(generics.GenericAPIView):
 class UpdateUserProfile(generics.GenericAPIView):
     serializer_class = serializer.CreateProfileSerializer
     permission_class = [IsAuthenticated]
+    parser_classes = [FormParser]
     def put(self, request, user_id):
-        data = request.data
+        file = request.data.get("file")
         prof = get_object_or_404(Profile, user__id=user_id)
-        serializer = self.serializer_class(data=data, instance=prof)
+        serializer = self.serializer_class(data=file, instance=prof)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
