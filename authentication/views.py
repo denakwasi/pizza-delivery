@@ -33,6 +33,7 @@ class UpdateUserProfile(generics.GenericAPIView):
     parser_classes = [FormParser]
     def put(self, request, user_id):
         file = request.data.get("file")
+        print(file)
         prof = get_object_or_404(Profile, user__id=user_id)
         serializer = self.serializer_class(data=file, instance=prof)
         if serializer.is_valid():
