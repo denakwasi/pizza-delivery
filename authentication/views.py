@@ -28,6 +28,7 @@ class AllUsers(generics.GenericAPIView):
 
 class UpdateUserProfile(generics.GenericAPIView):
     serializer_class = serializer.CreateProfileSerializer
+    permission_class = [IsAuthenticated]
     def put(self, request, user_id):
         data = request.data
         prof = get_object_or_404(Profile, user__id=user_id)
