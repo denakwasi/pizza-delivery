@@ -16,7 +16,7 @@ class CreateProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserCreationSerializer(serializers.ModelSerializer):
-    profile = CreateProfileSerializer(read_only=True)
+    profile = CreateProfileSerializer()  # read_only=True
     username = serializers.CharField(max_length=25)
     email = serializers.EmailField(max_length=80)
     phone_number = PhoneNumberField(allow_null=False, allow_blank=False)
