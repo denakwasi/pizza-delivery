@@ -169,7 +169,7 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
