@@ -8,15 +8,15 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class CreateProfileSerializer(serializers.HyperlinkedModelSerializer):
-    image = serializers.ImageField(default='default.jpg')
+    image = serializers.ImageField(default='default.jpg', allow_null=True, required=False)
 
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['id', 'image']
 
 
 class UserCreationSerializer(serializers.ModelSerializer):
-    profile = CreateProfileSerializer()  # read_only=True
+    profile = CreateProfileSerializer(read_only=True)  # 
     username = serializers.CharField(max_length=25)
     email = serializers.EmailField(max_length=80)
     phone_number = PhoneNumberField(allow_null=False, allow_blank=False)
@@ -53,4 +53,6 @@ class UserCreationSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+    
+    
 

@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics, status
+from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
 from .models import User, Profile
 from . import serializer
 from rest_framework.parsers import FormParser, FileUploadParser
@@ -27,16 +29,33 @@ class AllUsers(generics.GenericAPIView):
         
 
 
-class UpdateUserProfile(generics.GenericAPIView):
-    serializer_class = serializer.CreateProfileSerializer
-    permission_class = [IsAuthenticated]
-    parser_classes = [FormParser]
+class UpdateUser(generics.GenericAPIView):
+    # authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = serializer.UserCreationSerializer
+
     def put(self, request, user_id):
-        file = request.data.get("file")
-        print(file)
-        prof = get_object_or_404(Profile, user__id=user_id)
-        serializer = self.serializer_class(data=file, instance=prof)
+        data = request.data
+        user = get_object_or_404(User, pk=user_id)
+        serializer = self.serializer_class(data=data, instance=user)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class DeleteUser(generics.GenericAPIView):
+    # authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsAdminUser,)
+    serializer_class = serializer.UserCreationSerializer
+
+    def delete(self, request, user_id):
+        user = get_object_or_404(User, pk=user_id)
+        if user:
+            if not user.is_superuser:
+                user.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
