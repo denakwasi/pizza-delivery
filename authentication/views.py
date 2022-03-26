@@ -5,11 +5,12 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from .models import User, Profile
 from . import serializer
-from rest_framework.parsers import FormParser, FileUploadParser
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 
 class UserCreateView(generics.GenericAPIView):
     serializer_class = serializer.UserCreationSerializer
+    parser_classes = [MultiPartParser, FormParser]
     def post(self, request):
         data = request.data
         serializer = self.serializer_class(data=data)
@@ -33,6 +34,7 @@ class UpdateUser(generics.GenericAPIView):
     # authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = serializer.UserCreationSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
     def put(self, request, user_id):
         data = request.data
