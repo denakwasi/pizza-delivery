@@ -65,7 +65,7 @@ class DeleteUser(generics.GenericAPIView):
 
 
 class UpdateUserProfile(generics.GenericAPIView):
-    serializer_class = serializer.CreateProfileSerializer
+    # serializer_class = serializer.CreateProfileSerializer
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser, MultiPartParser, FormParser,)
     
