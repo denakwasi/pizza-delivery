@@ -10,7 +10,6 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 class UserCreateView(generics.GenericAPIView):
     serializer_class = serializer.UserCreationSerializer
-    parser_classes = [MultiPartParser, FormParser]
     def post(self, request):
         data = request.data
         serializer = self.serializer_class(data=data)
@@ -34,7 +33,7 @@ class UpdateUser(generics.GenericAPIView):
     # authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = serializer.UserCreationSerializer
-    parser_classes = [MultiPartParser, FormParser]
+    # parser_classes = [MultiPartParser, FormParser]
 
     def put(self, request, user_id):
         data = request.data
