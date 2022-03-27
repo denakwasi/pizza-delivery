@@ -4,9 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from .models import User, Profile
+from rest_framework.decorators import action
 from . import serializer
 from .serializer import CreateProfileSerializer, UserCreationSerializer
-from rest_framework.parsers import FileUploadParser, FormParser, MultiPartParser
+from rest_framework.parsers import JSONParser, FileUploadParser, FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 
 class UserCreateView(generics.GenericAPIView):
@@ -65,13 +66,17 @@ class DeleteUser(generics.GenericAPIView):
 
 class UpdateUserProfile(generics.GenericAPIView):
     serializer_class = serializer.CreateProfileSerializer
-    parser_classes = [FileUploadParser, FormParser]
-    def put(self, request, user_id):
-        data = request.data
-        prof = get_object_or_404(Profile, pk=user_id)
-        serializer = self.serializer_class(data=data, instance=prof)
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (JSONParser, MultiPartParser, FormParser,)
+    
+    @action(detail=True, methods=['put'])
+    def profile(self, request):
+        user = self.get_object()
+        profile = user.profile
+        serializer = CreateProfileSerializer(profile, data=request.data)
+        # serializer = self.serializer_class(data=data, instance=prof)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return Response({"File": data})  # data=serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        return Response({"profile": profile})  # data=serializer.errors, status=status.HTTP_400_BAD_REQUEST
 
