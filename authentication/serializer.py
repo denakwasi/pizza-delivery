@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class CreateProfileSerializer(serializers.HyperlinkedModelSerializer):
+class CreateProfileSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(default='default.jpg', allow_null=True, required=False)
 
     class Meta:
