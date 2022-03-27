@@ -69,9 +69,6 @@ class UpdateUserProfile(generics.GenericAPIView):
     parser_classes = (MultiPartParser, FormParser)
     
     def put(self, request, img_id):
-        # user = self.get_object()
-        # profile = user.profile
-        # serializer = CreateProfileSerializer(profile, data=request.data)
         data = request.FILES
         print(request.data)
         prof = get_object_or_404(Profile, pk=img_id)
