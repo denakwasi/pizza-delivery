@@ -15,8 +15,8 @@ class CreateProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'image']
 
 
-class UserCreationSerializer(serializers.HyperlinkedModelSerializer):
-    profile = CreateProfileSerializer(read_only=True)  # 
+class UserCreationSerializer(serializers.ModelSerializer):
+    # profile = CreateProfileSerializer(read_only=True)  # 
     username = serializers.CharField(max_length=25)
     email = serializers.EmailField(max_length=80)
     phone_number = PhoneNumberField(allow_null=False, allow_blank=False)
@@ -24,7 +24,7 @@ class UserCreationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'phone_number', 'password', 'profile']
+        fields = ['id', 'username', 'email', 'phone_number', 'password']
 
     def validate(self, attrs):
         username_exists = User.objects.filter(username=attrs['username']).exists()
