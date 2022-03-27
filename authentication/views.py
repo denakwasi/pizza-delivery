@@ -72,12 +72,12 @@ class UpdateUserProfile(generics.GenericAPIView):
         # user = self.get_object()
         # profile = user.profile
         # serializer = CreateProfileSerializer(profile, data=request.data)
-        data = request.FILES['image']
+        data = request.FILES
         print(request.data)
         prof = get_object_or_404(Profile, pk=img_id)
         serializer = self.serializer_class(data=data, instance=prof)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return Response({"profile": data})  # data=serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # d
 
