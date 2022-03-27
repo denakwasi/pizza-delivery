@@ -16,7 +16,7 @@ class CreateProfileSerializer(serializers.ModelSerializer):
 
 
 class UserCreationSerializer(serializers.ModelSerializer):
-    # profile = CreateProfileSerializer(read_only=True)  # 
+    profile = CreateProfileSerializer(read_only=True)  # 
     username = serializers.CharField(max_length=25)
     email = serializers.EmailField(max_length=80)
     phone_number = PhoneNumberField(allow_null=False, allow_blank=False)
@@ -24,7 +24,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'phone_number', 'password']
+        fields = ['id', 'username', 'email', 'phone_number', 'password', 'profile']
 
     def validate(self, attrs):
         username_exists = User.objects.filter(username=attrs['username']).exists()
