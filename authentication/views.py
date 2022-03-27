@@ -18,7 +18,7 @@ class UserCreateView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        return Response({'data': data}) # data=serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        return Response({'serializer': serializer}) # data=serializer.errors, status=status.HTTP_400_BAD_REQUEST
 
 
 class AllUsers(generics.GenericAPIView):
