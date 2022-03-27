@@ -65,7 +65,7 @@ class DeleteUser(generics.GenericAPIView):
 
 class UpdateUserProfile(generics.GenericAPIView):
     serializer_class = serializer.CreateProfileSerializer
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     parser_classes = (MultiPartParser, FormParser)
     
     def put(self, request, img_id):

@@ -48,7 +48,7 @@ class User(AbstractUser):
 User = get_user_model()
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='https://denniskowuah748-bucket.s3.amazonaws.com/profile_pics/default.jpg', null=True, upload_to='profile_pics')
+    image = models.ImageField(default='default.jpg', null=True, upload_to='profile_pics')
 
     def __str__(self) -> str:
        return f"{self.user.username} Profile" 
