@@ -65,18 +65,19 @@ class DeleteUser(generics.GenericAPIView):
 
 
 class UpdateUserProfile(generics.GenericAPIView):
-    # serializer_class = serializer.CreateProfileSerializer
-    permission_classes = (IsAuthenticated,)
+    serializer_class = serializer.CreateProfileSerializer
+    # permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser, MultiPartParser, FormParser,)
     
-    @action(detail=True, methods=['put'])
-    def profile(self, request):
-        user = self.get_object()
-        profile = user.profile
-        serializer = CreateProfileSerializer(profile, data=request.data)
-        # serializer = self.serializer_class(data=data, instance=prof)
+    def put(self, request, img_id):
+        # user = self.get_object()
+        # profile = user.profile
+        # serializer = CreateProfileSerializer(profile, data=request.data)
+        data = request.data
+        prof = get_object_or_404(Profile, pk=img_id)
+        serializer = self.serializer_class(data=data, instance=prof)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return Response({"profile": profile})  # data=serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        return Response({"profile": data})  # data=serializer.errors, status=status.HTTP_400_BAD_REQUEST
 
