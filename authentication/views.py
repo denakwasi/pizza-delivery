@@ -9,16 +9,16 @@ from .serializer import UserCreationSerializer
 from rest_framework.parsers import FileUploadParser, FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 
-class UserCreateView(APIView):
-    # serializer_class = serializer.UserCreationSerializer
+class UserCreateView(generics.GenericAPIView):
+    serializer_class = serializer.UserCreationSerializer
     # parser_classes = (MultiPartParser, FormParser,)
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         data = request.data
-        serializer = UserCreationSerializer(data=data) # self.serializer_class(data=data)
+        serializer = self.serializer_class(data=data) # self.serializer_class(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        return Response({"data": data})  # data=serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # 
 
 
 class AllUsers(generics.GenericAPIView):
