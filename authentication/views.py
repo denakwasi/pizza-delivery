@@ -31,7 +31,6 @@ class AllUsers(generics.GenericAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
         
 
-
 class UpdateUser(generics.GenericAPIView):
     # authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -67,13 +66,14 @@ class DeleteUser(generics.GenericAPIView):
 class UpdateUserProfile(generics.GenericAPIView):
     serializer_class = serializer.CreateProfileSerializer
     # permission_classes = (IsAuthenticated,)
-    parser_classes = (FileUploadParser, MultiPartParser, FormParser,)
+    parser_classes = (MultiPartParser, FormParser)
     
     def put(self, request, img_id):
         # user = self.get_object()
         # profile = user.profile
         # serializer = CreateProfileSerializer(profile, data=request.data)
-        data = request.data
+        data = request.FILES['image']
+        print(request.data)
         prof = get_object_or_404(Profile, pk=img_id)
         serializer = self.serializer_class(data=data, instance=prof)
         if serializer.is_valid():
