@@ -15,7 +15,7 @@ class CreateProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'image']
 
 
-class UserCreationSerializer(serializers.ModelSerializer):
+class UserCreationSerializer(serializers.HyperlinkedModelSerializer):
     profile = CreateProfileSerializer(read_only=True)  # 
     username = serializers.CharField(max_length=25)
     email = serializers.EmailField(max_length=80)
