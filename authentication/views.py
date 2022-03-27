@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from .models import User, Profile
 from . import serializer
-from .serializer import UserCreationSerializer
+from .serializer import CreateProfileSerializer, UserCreationSerializer
 from rest_framework.parsers import FileUploadParser, FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 
@@ -61,4 +61,17 @@ class DeleteUser(generics.GenericAPIView):
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(status=status.HTTP_304_NOT_MODIFIED)
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class UpdateUserProfile(generics.GenericAPIView):
+    serializer_class = serializer.CreateProfileSerializer
+    parser_classes = [FileUploadParser, FormParser]
+    def put(self, request, user_id):
+        data = request.data
+        prof = get_object_or_404(Profile, pk=user_id)
+        serializer = self.serializer_class(data=data, instance=prof)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response({"File": data})  # data=serializer.errors, status=status.HTTP_400_BAD_REQUEST
 

@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class CreateProfileSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(default='default.jpg', allow_null=True, required=False)
+    image = serializers.ImageField(default='https://denniskowuah748-bucket.s3.amazonaws.com/profile_pics/default.jpg', allow_null=True, required=False)
 
     class Meta:
         model = Profile
