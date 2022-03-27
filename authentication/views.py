@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 class UserCreateView(APIView):
     # serializer_class = serializer.UserCreationSerializer
-    parser_classes = (FileUploadParser, MultiPartParser, FormParser,)
+    parser_classes = (MultiPartParser, FormParser,)
     def post(self, request, *args, **kwargs):
         data = request.data
         serializer = UserCreationSerializer(data=data) # self.serializer_class(data=data)
